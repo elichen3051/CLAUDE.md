@@ -2,13 +2,13 @@
 
 This file provides guidance to GPT Codex when working with code in this repository.
 
-本檔給未來的 GPT Codex：在這個 workspace 中工作時的整體規範與導航。個別 subproject 的細節不放在這裡，放在各自的 `CLAUDE.md` 或 `README`。
+本檔給未來的 GPT Codex：在這個 workspace 中工作時的整體規範與導航。個別 subproject 的細節不放在這裡，放在各自的 `AGENTS.md` 或 `README`。
 
 ## Workspace layout
 
 此 workspace 是多個獨立 research project 的容器。根目錄本身沒有 build / test / lint。
 
-- **`<subproject>/`** — 每個 subproject 自成一體，擁有自己的 `pyproject.toml`、`.venv`，通常也有自己的 `CLAUDE.md` 或 `README.md`。進入 subproject 工作前，先讀它自己的 doc；不要把其他專案的慣例或本檔未提及的命令套過去。
+- **`<subproject>/`** — 每個 subproject 自成一體，擁有自己的 `pyproject.toml`、`.venv`，通常也有自己的 `AGENTS.md` 或 `README.md`。進入 subproject 工作前，先讀它自己的 doc；不要把其他專案的慣例或本檔未提及的命令套過去。
 - **`knowledge/`** — 持久性領域知識的 markdown（見下一節）。
 - **`papers/`** — 原始論文 PDF。檔名保留 upstream 原貌（arXiv id 或 conference 提供的檔名），**不要改名**。
 - **`models/`**（若存在）— 跨 subproject 共用的模型權重。
@@ -31,6 +31,18 @@ This file provides guidance to GPT Codex when working with code in this reposito
 3. 若 summary 來自特定 paper，在 summary md 最上方加 `Source: papers/<filename>` 保留連結。
 4. 在上表加一列：plain-language topic + 相對路徑，一行之內。
 5. 不要把 paper / md 內容 inline 進本檔。
+
+### Referenced repo
+
+如果你需要參考最新的實作方式, 以下是建議的 GitHub repo
+
+1. vllm: https://github.com/vllm-project/vllm.git
+2. transformers: https://github.com/huggingface/transformers.git
+3. llama.cpp: https://github.com/ggml-org/llama.cpp.git
+4. sglang: https://github.com/sgl-project/sglang.git
+
+你被授權可以 clone 這些 repo 到 /tmp 或 tmp/，並自由閱讀這些 source code 以及切到其他的 branch 獲得資訊。
+如果你想進一步知道最新的討論以及實作方法，可以到這些 repo 的討論區查看。
 
 ## Environment policy
 
@@ -59,10 +71,17 @@ This file provides guidance to GPT Codex when working with code in this reposito
 
 ### 專案級工具由 subproject 自理
 
-formatter、linter、test runner、CLI entrypoint 等命令都屬於各 subproject 自己的 doc，不放本檔。進入 subproject 前若不清楚命令，先讀它的 `CLAUDE.md` 或 `README.md`。
+formatter、linter、test runner、CLI entrypoint 等命令都屬於各 subproject 自己的 doc，不放本檔。進入 subproject 前若不清楚命令，先讀它的 `AGENTS.md` 或 `README.md`。
 
 ## Working across subprojects
 
 - **不要**把某個 subproject 的具體命令、檔案路徑、架構細節提升到本檔。本檔保持 workspace 抽象層。
 - **不要**假設 workspace 根目錄名稱固定（使用者會在不同機器、不同帳號下重用此規範）。
 - 跨 subproject 的共用資源只有 `knowledge/`、`papers/`、`models/`；其他各自為政。
+
+## Coding conventions
+
+你在實作程式碼的時候，請同時撰寫 comments, docstring, 尤其是對程式的用法撰寫 docstring, 包含用途, 每個參數的解釋, 以及執行範例。
+如果你有做測試的話，請撰寫測試相關的程式碼，同時也為這些程式碼寫上怎麼使用, 重現測試結果, 以及為什麼設計這個測試, 對應的問題。
+
+如果有些驗證需要 GPU 請主動告知，使用者會回覆是否有可用的 GPU, 或是你可以透過 `nvidia-smi` 查看。

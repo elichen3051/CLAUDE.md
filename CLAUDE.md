@@ -15,7 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Knowledge base
 
-領域知識、paper 摘要、設計筆記都放在 `knowledge/*.md`。**CLAUDE.md 只是索引，不搬運內容**——編輯原 md，不要 inline 進本檔。
+領域知識、paper 摘要、設計筆記都放在 `knowledge/*.md`。**本檔只是索引，不搬運內容**——編輯原 md，不要 inline 進本檔。
 
 **在寫會碰到下列 topic 的程式碼前，先讀對應 md。**
 
@@ -31,6 +31,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 3. 若 summary 來自特定 paper，在 summary md 最上方加 `Source: papers/<filename>` 保留連結。
 4. 在上表加一列：plain-language topic + 相對路徑，一行之內。
 5. 不要把 paper / md 內容 inline 進本檔。
+
+### Referenced repo
+
+如果你需要參考最新的實作方式, 以下是建議的 GitHub repo
+
+1. vllm: https://github.com/vllm-project/vllm.git
+2. transformers: https://github.com/huggingface/transformers.git
+3. llama.cpp: https://github.com/ggml-org/llama.cpp.git
+4. sglang: https://github.com/sgl-project/sglang.git
+
+你被授權可以 clone 這些 repo 到 /tmp 或 tmp/，並自由閱讀這些 source code 以及切到其他的 branch 獲得資訊。
+如果你想進一步知道最新的討論以及實作方法，可以到這些 repo 的討論區查看。
 
 ## Environment policy
 
@@ -66,3 +78,11 @@ formatter、linter、test runner、CLI entrypoint 等命令都屬於各 subproje
 - **不要**把某個 subproject 的具體命令、檔案路徑、架構細節提升到本檔。本檔保持 workspace 抽象層。
 - **不要**假設 workspace 根目錄名稱固定（使用者會在不同機器、不同帳號下重用此規範）。
 - 跨 subproject 的共用資源只有 `knowledge/`、`papers/`、`models/`；其他各自為政。
+
+## Coding conventions
+
+你在實作程式碼的時候，請同時撰寫 comments, docstring, 尤其是對程式的用法撰寫 docstring, 包含用途, 每個參數的解釋, 以及執行範例。
+如果你有做測試的話，請撰寫測試相關的程式碼，同時也為這些程式碼寫上怎麼使用, 重現測試結果, 以及為什麼設計這個測試, 對應的問題。
+
+如果有些驗證需要 GPU 請主動告知，使用者會回覆是否有可用的 GPU, 或是你可以透過 `nvidia-smi` 查看。
+
